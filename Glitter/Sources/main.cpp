@@ -42,7 +42,7 @@ int main(int argc, char * argv[]) {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(mWindow, true);
-    ImGui_ImplOpenGL3_Init("#version 400");
+    ImGui_ImplOpenGL3_Init("#version 460");
 
     // Rendering Loop
     while (glfwWindowShouldClose(mWindow) == false) {
@@ -50,12 +50,34 @@ int main(int argc, char * argv[]) {
             glfwSetWindowShouldClose(mWindow, true);
 
         // Background Fill Color
-        glClearColor(0.75f, 0.25f, 0.25f, 1.0f);
+        glClearColor(0.05f, 0.1f, 0.25f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        // Start the Dear ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+
+        ImGui::NewFrame();
+        {
+            ImGui::Begin("Hello, world!");
+            ImGui::Text("This is some useful text.");
+            ImGui::End();
+        }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         // Flip Buffers and Draw
         glfwSwapBuffers(mWindow);
         glfwPollEvents();
-    }   glfwTerminate();
+    }
+
+    // Shutdown imgui
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    // Deallocate GLFW Resources
+    glfwTerminate();
     return EXIT_SUCCESS;
 }
