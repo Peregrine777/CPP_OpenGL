@@ -1,6 +1,11 @@
 // Local Headers
 #include "glitter.hpp"
 
+//imgui
+#include"../Vendor/imgui/imgui.h"
+#include"../Vendor/imgui/imgui_impl_glfw.h"
+#include"../Vendor/imgui/imgui_impl_opengl3.h"
+
 // System Headers
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -30,6 +35,14 @@ int main(int argc, char * argv[]) {
     glfwMakeContextCurrent(mWindow);
     gladLoadGL();
     fprintf(stderr, "OpenGL %s\n", glGetString(GL_VERSION));
+
+    //IMGUI
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGui::StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(mWindow, true);
+    ImGui_ImplOpenGL3_Init("#version 400");
 
     // Rendering Loop
     while (glfwWindowShouldClose(mWindow) == false) {
